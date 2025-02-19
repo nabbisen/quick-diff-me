@@ -1,6 +1,6 @@
 [package]
 name = "quick-diff-me"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 
 description = "Quick Diff (unified diff) on Microsoft Excel viewer as Iced GUI app"
@@ -9,7 +9,7 @@ license = "Apache-2.0"
 
 categories = ["gui", "visualization", "development-tools", "data-structures"]
 keywords = ["gui", "compare", "diff", "excel", "xlsx"]
-rust-version = "1.81.0"
+rust-version = "1.78.0"
 
 [profile.release]     # shrink executable size
 opt-level = "z"
