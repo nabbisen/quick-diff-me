@@ -1,6 +1,6 @@
 use iced::theme::palette::Extended;
 use iced::widget::{button, column, container, row, scrollable, text, Button, Column, Row};
-use iced::{Element, Fill, Length};
+use iced::{event, Element, Fill, Length, Subscription};
 use sheets_diff::core::diff::UnifiedDiffKind;
 
 use crate::core::consts::{APP_THEME, BASE_SIZE, FOOTER_NOTE, GUIDANCE};
@@ -13,6 +13,27 @@ pub fn update(state: &mut State, message: Message) {
     let file_dialog = file_dialog(state, &message);
 
     match message {
+        Message::EventOccurred(event) => match event {
+            iced::Event::Window(event) => match event {
+                iced::window::Event::FileDropped(path) => {
+                    if !path.extension().is_some_and(|x| x.to_str() == Some("xlsx")) {
+                        return;
+                    }
+
+                    if state.old_filepath.is_empty() {
+                        state.old_filepath = path.to_string_lossy().to_string();
+                    } else if state.new_filepath.is_empty() {
+                        state.new_filepath = path.to_string_lossy().to_string();
+                    } else {
+                        state.old_filepath = path.to_string_lossy().to_string();
+                        state.new_filepath = String::new();
+                    }
+                    diff(state);
+                }
+                _ => (),
+            },
+            _ => (),
+        },
         Message::OldFileSelect => {
             let selected = file_dialog
                 .pick_file()
@@ -91,6 +112,10 @@ pub fn view(state: &State) -> Element<Message> {
     .center_x(Fill)
     .center_y(Fill)
     .into()
+}
+
+pub fn subscription(_: &State) -> Subscription<Message> {
+    event::listen().map(Message::EventOccurred)
 }
 
 fn diff_rows<'a>(state: &'a State, palette: &'a Extended) -> Vec<Row<'a, Message>> {

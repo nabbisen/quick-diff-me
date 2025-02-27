@@ -1,8 +1,10 @@
+use iced::Event;
 use sheets_diff::core::diff::UnifiedDiff;
 
 /// iced messages
 #[derive(Debug, Clone)]
 pub enum Message {
+    EventOccurred(Event),
     OldFileSelect,
     NewFileSelect,
 }

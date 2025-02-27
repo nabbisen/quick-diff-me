@@ -10,8 +10,8 @@ pub fn file_dialog(state: &State, message: &Message) -> FileDialog {
     let default_directory_base_filepath =
         if !state.old_filepath.is_empty() && !state.new_filepath.is_empty() {
             match message {
-                Message::OldFileSelect => Some(state.old_filepath.as_str()),
                 Message::NewFileSelect => Some(state.new_filepath.as_str()),
+                _ => Some(state.old_filepath.as_str()),
             }
         } else if !state.old_filepath.is_empty() {
             Some(state.old_filepath.as_str())
