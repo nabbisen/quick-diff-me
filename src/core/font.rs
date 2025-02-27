@@ -7,16 +7,19 @@ const PRIMARY_FONT: &str = "Hiragino Sans";
 #[cfg(target_os = "linux")]
 const PRIMARY_FONT: &str = "sans-self";
 
+/// get app font on non-linux
 #[cfg(not(target_os = "linux"))]
 pub fn app_font<'a>() -> &'a str {
     PRIMARY_FONT
 }
 
+/// get app font on linux
 #[cfg(target_os = "linux")]
 pub fn app_font<'a>() -> &'a str {
     linux_font()
 }
 
+/// get primary font on linux
 #[cfg(target_os = "linux")]
 fn linux_font() -> &'static str {
     let fonts = [
@@ -36,6 +39,7 @@ fn linux_font() -> &'static str {
     PRIMARY_FONT
 }
 
+/// check if the font is installed in os
 #[cfg(target_os = "linux")]
 fn is_installed_font(font_name: &str) -> bool {
     use std::process::Command;
