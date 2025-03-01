@@ -1,11 +1,11 @@
 #[cfg(target_os = "windows")]
-const PRIMARY_FONT: &str = "Yu Gothic";
+const PRIMARY_FONT: &str = "BIZ UDGothic";
 
 #[cfg(target_os = "macos")]
-const PRIMARY_FONT: &str = "Hiragino Sans";
+const PRIMARY_FONT: &str = "Hiragino Sans Mono";
 
 #[cfg(target_os = "linux")]
-const PRIMARY_FONT: &str = "sans-self";
+const PRIMARY_FONT: &str = "monospace";
 
 /// get app font on non-linux
 #[cfg(not(target_os = "linux"))]
@@ -23,11 +23,11 @@ pub fn app_font<'a>() -> &'a str {
 #[cfg(target_os = "linux")]
 fn linux_font() -> &'static str {
     let fonts = [
-        "Noto Sans CJK JP",
-        "IPAGothic",
-        "TakaoPGothic",
-        "VL Gothic",
-        "DejaVu Sans",
+        "Noto Sans Mono CJK JP",
+        "Droid Sans Mono",
+        "Source Code Pro",
+        "Hack",
+        "Ubuntu Mono",
     ];
 
     for font in fonts {

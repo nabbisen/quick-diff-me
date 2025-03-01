@@ -1,10 +1,11 @@
 use iced::theme::palette::Extended;
 use iced::widget::{button, column, container, row, scrollable, text, Button, Column, Row};
-use iced::{event, Element, Fill, Length, Subscription};
+use iced::{event, Element, Fill, Font, Length, Subscription};
 use sheets_diff::core::diff::UnifiedDiffKind;
 
 use crate::core::consts::{APP_THEME, BASE_SIZE, FOOTER_NOTE, GUIDANCE};
 use crate::core::diff::diff;
+use crate::core::font::app_font;
 use crate::core::types::{Message, State};
 use crate::core::utils::file_dialog;
 
@@ -58,6 +59,7 @@ pub fn update(state: &mut State, message: Message) {
 /// iced view function
 pub fn view(state: &State) -> Element<Message> {
     let palette = APP_THEME.extended_palette();
+    let diff_text_font = Font::with_name(app_font());
 
     let old_button: Button<Message> = button(
         text("Left")
@@ -82,7 +84,7 @@ pub fn view(state: &State) -> Element<Message> {
     .padding(0)
     .on_press(Message::NewFileSelect);
 
-    let rows = diff_rows(&state, palette);
+    let rows = diff_rows(&state, palette, diff_text_font);
 
     let diff_content = Column::with_children(rows.into_iter().map(Element::from));
     let scrollable_helper = scrollable(diff_content);
@@ -118,7 +120,11 @@ pub fn subscription(_: &State) -> Subscription<Message> {
     event::listen().map(Message::EventOccurred)
 }
 
-fn diff_rows<'a>(state: &'a State, palette: &'a Extended) -> Vec<Row<'a, Message>> {
+fn diff_rows<'a>(
+    state: &'a State,
+    palette: &'a Extended,
+    diff_text_font: Font,
+) -> Vec<Row<'a, Message>> {
     let rows: Vec<Row<Message>> = if let Some(unified_diff) = &state.unified_diff {
         unified_diff
             .lines
@@ -140,7 +146,8 @@ fn diff_rows<'a>(state: &'a State, palette: &'a Extended) -> Vec<Row<'a, Message
                     UnifiedDiffKind::DiffPos => text(old_str).color(palette.secondary.strong.color),
                     UnifiedDiffKind::OldContent => text(old_str).color(palette.danger.strong.color),
                     _ => text(old_str),
-                };
+                }
+                .font(diff_text_font);
                 let new_text = match x.kind {
                     UnifiedDiffKind::OldTitle | UnifiedDiffKind::NewTitle => {
                         text(new_str).color(palette.secondary.base.color)
@@ -150,7 +157,8 @@ fn diff_rows<'a>(state: &'a State, palette: &'a Extended) -> Vec<Row<'a, Message
                         text(new_str).color(palette.success.strong.color)
                     }
                     _ => text(new_str),
-                };
+                }
+                .font(diff_text_font);
 
                 row![
                     column!(container(old_text).width(Fill)),
