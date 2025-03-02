@@ -2676,7 +2676,7 @@ checksum = "afbdc74edc00b6f6a218ca6a5364d6226a259d4b8ea1af4a0ea063f27e179f4d"
 
 [[package]]
 name = "quick-diff-me"
-version = "0.3.1"
+version = "0.3.2"
 dependencies = [
  "iced",
  "rfd",
@@ -3015,9 +3015,9 @@ dependencies = [
 
 [[package]]
 name = "sheets-diff"
-version = "1.0.5"
+version = "1.0.7"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d4a22f8a1cc3eeb6c5b19a310ced24e9d71b5153f8214430f998f408c6b14c0a"
+checksum = "2b892c155ae2a50c71e9cbd9dd668d1b410271b2daae2001c7dfd5f679a2ae20"
 dependencies = [
  "calamine",
 ]
