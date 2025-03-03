@@ -5,7 +5,7 @@ use sheets_diff::core::diff::UnifiedDiffKind;
 
 use crate::core::consts::{APP_THEME, BASE_SIZE, FOOTER_NOTE, GUIDANCE};
 use crate::core::diff::diff;
-use crate::core::font::app_font;
+use crate::core::font::diff_font;
 use crate::core::types::{Message, State};
 use crate::core::utils::file_dialog;
 
@@ -59,7 +59,7 @@ pub fn update(state: &mut State, message: Message) {
 /// iced view function
 pub fn view(state: &State) -> Element<Message> {
     let palette = APP_THEME.extended_palette();
-    let diff_text_font = Font::with_name(app_font());
+    let diff_font = Font::with_name(diff_font());
 
     let old_button: Button<Message> = button(
         text("Left")
@@ -84,7 +84,7 @@ pub fn view(state: &State) -> Element<Message> {
     .padding(0)
     .on_press(Message::NewFileSelect);
 
-    let rows = diff_rows(&state, palette, diff_text_font);
+    let rows = diff_rows(&state, palette, diff_font);
 
     let diff_content = Column::with_children(rows.into_iter().map(Element::from));
     let scrollable_helper = scrollable(diff_content);
@@ -123,7 +123,7 @@ pub fn subscription(_: &State) -> Subscription<Message> {
 fn diff_rows<'a>(
     state: &'a State,
     palette: &'a Extended,
-    diff_text_font: Font,
+    diff_font: Font,
 ) -> Vec<Row<'a, Message>> {
     let rows: Vec<Row<Message>> = if let Some(unified_diff) = &state.unified_diff {
         unified_diff
@@ -147,7 +147,7 @@ fn diff_rows<'a>(
                     UnifiedDiffKind::OldContent => text(old_str).color(palette.danger.strong.color),
                     _ => text(old_str),
                 }
-                .font(diff_text_font);
+                .font(diff_font);
                 let new_text = match x.kind {
                     UnifiedDiffKind::OldTitle | UnifiedDiffKind::NewTitle => {
                         text(new_str).color(palette.secondary.base.color)
@@ -158,7 +158,7 @@ fn diff_rows<'a>(
                     }
                     _ => text(new_str),
                 }
-                .font(diff_text_font);
+                .font(diff_font);
 
                 row![
                     column!(container(old_text).width(Fill)),
