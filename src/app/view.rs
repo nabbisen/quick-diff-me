@@ -1,63 +1,14 @@
 use iced::theme::palette::Extended;
 use iced::widget::{button, column, container, row, scrollable, text, Button, Column, Row};
-use iced::{event, Element, Fill, Font, Length, Subscription};
+use iced::{Element, Fill, Font, Length};
 use sheets_diff::core::diff::UnifiedDiffKind;
 
 use crate::core::consts::{APP_THEME, BASE_SIZE, FOOTER_NOTE, GUIDANCE};
-use crate::core::diff::diff;
 use crate::core::font::diff_font;
 use crate::core::types::{Message, State};
-use crate::core::utils::file_dialog;
 
-/// iced update function
-pub fn update(state: &mut State, message: Message) {
-    let file_dialog = file_dialog(state, &message);
-
-    match message {
-        Message::EventOccurred(event) => match event {
-            iced::Event::Window(event) => match event {
-                iced::window::Event::FileDropped(path) => {
-                    if !path.extension().is_some_and(|x| x.to_str() == Some("xlsx")) {
-                        return;
-                    }
-
-                    if state.old_filepath.is_empty() {
-                        state.old_filepath = path.to_string_lossy().to_string();
-                    } else if state.new_filepath.is_empty() {
-                        state.new_filepath = path.to_string_lossy().to_string();
-                    } else {
-                        state.old_filepath = path.to_string_lossy().to_string();
-                        state.new_filepath = String::new();
-                    }
-                    diff(state);
-                }
-                _ => (),
-            },
-            _ => (),
-        },
-        Message::OldFileSelect => {
-            let selected = file_dialog
-                .pick_file()
-                .map(|file| file.display().to_string());
-            if let Some(selected) = selected {
-                state.old_filepath = selected;
-                diff(state);
-            }
-        }
-        Message::NewFileSelect => {
-            let selected = file_dialog
-                .pick_file()
-                .map(|file| file.display().to_string());
-            if let Some(selected) = selected {
-                state.new_filepath = selected;
-                diff(state);
-            }
-        }
-    }
-}
-
-/// iced view function
-pub fn view(state: &State) -> Element<Message> {
+/// iced view handler
+pub fn handle(state: &State) -> Element<Message> {
     let palette = APP_THEME.extended_palette();
     let diff_font = Font::with_name(diff_font());
 
@@ -116,10 +67,7 @@ pub fn view(state: &State) -> Element<Message> {
     .into()
 }
 
-pub fn subscription(_: &State) -> Subscription<Message> {
-    event::listen().map(Message::EventOccurred)
-}
-
+/// generate diff lines
 fn diff_rows<'a>(
     state: &'a State,
     palette: &'a Extended,

@@ -11,9 +11,9 @@ use core::{
 
 /// app entry point
 pub fn main() -> iced::Result {
-    let app = iced::application(APP_TITLE, update, view)
+    let app = iced::application(APP_TITLE, update::handle, view::handle)
         .default_font(Font::with_name(app_default_font()))
-        .subscription(subscription)
+        .subscription(subscription::handle)
         .theme(|_state| APP_THEME);
     app.run()
 }

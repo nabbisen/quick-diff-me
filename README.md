@@ -1,5 +1,9 @@
 # Quick Diff ME
 
+[![crates.io](https://img.shields.io/crates/v/quick-diff-me?label=latest)](https://crates.io/crates/quick-diff-me)
+[![License](https://img.shields.io/github/license/nabbisen/quick-diff-me)](https://github.com/nabbisen/quick-diff-me/blob/main/LICENSE)
+[![Dependency Status](https://deps.rs/crate/quick-diff-me/latest/status.svg)](https://deps.rs/crate/quick-diff-me/latest)
+
 ## Summary
 
 Quick diff viewer to comapre Microsoft Excel files. Difference about sheets (added or removed), cell values and cell formulas will be shown in unified diff format. Written in Rust and dependent on [sheets-diff-rs](https://github.com/nabbisen/sheets-diff-rs) as diff collector.    
