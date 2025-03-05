@@ -14,4 +14,4 @@ Microsoft Excel ファイル間の差分簡易ビュアーです。シート増�
 
 ### Screenshot
 
-![screenshot.png](./screenshot.png)
+![screenshot.png](docs/.assets/screenshot.png)
