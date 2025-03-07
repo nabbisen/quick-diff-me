@@ -1,8 +1,10 @@
 # Quick Diff ME
 
 [![crates.io](https://img.shields.io/crates/v/quick-diff-me?label=latest)](https://crates.io/crates/quick-diff-me)
-[![License](https://img.shields.io/github/license/nabbisen/quick-diff-me)](https://github.com/nabbisen/quick-diff-me/blob/main/LICENSE)
+[![Documentation](https://docs.rs/quick-diff-me/badge.svg?version=latest)](https://docs.rs/quick-diff-me/latest)
 [![Dependency Status](https://deps.rs/crate/quick-diff-me/latest/status.svg)](https://deps.rs/crate/quick-diff-me/latest)
+[![Releases Workflow](https://github.com/nabbisen/quick-diff-me/actions/workflows/release.yml/badge.svg)](https://github.com/nabbisen/quick-diff-me/actions/workflows/)
+[![License](https://img.shields.io/github/license/nabbisen/quick-diff-me)](https://github.com/nabbisen/quick-diff-me/blob/main/LICENSE)
 
 ## Summary
 
@@ -18,4 +20,4 @@ Microsoft Excel ファイル間の差分簡易ビュアーです。シート増�
 
 ### Screenshot
 
-![screenshot.png](docs/.assets/screenshot.png)
+![screenshot.png](./screenshot.png)
