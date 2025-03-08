@@ -3,7 +3,7 @@ use std::path::{Path, PathBuf};
 
 use rfd::FileDialog;
 
-use super::types::{Message, State};
+use crate::app::{message::Message, state::State};
 
 /// get dialog to choose file
 pub fn file_dialog(state: &State, message: &Message) -> FileDialog {

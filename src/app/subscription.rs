@@ -1,6 +1,6 @@
 use iced::{event, Subscription};
 
-use crate::core::types::{Message, State};
+use super::{message::Message, state::State};
 
 /// iced subscription handler
 pub fn handle(_: &State) -> Subscription<Message> {

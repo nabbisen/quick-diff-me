@@ -1,5 +1,8 @@
+use arboard::Clipboard;
+
+use super::{message::Message, state::State};
+use crate::core::consts::DIFF_TO_CLIPBOARD_CLICKED;
 use crate::core::diff::diff;
-use crate::core::types::{Message, State};
 use crate::core::utils::file_dialog;
 
 /// iced update handler
@@ -45,6 +48,14 @@ pub fn handle(state: &mut State, message: Message) {
                 state.new_filepath = selected;
                 diff(state);
             }
+        }
+        Message::Clear => state.reset(),
+        Message::DiffToClipboard => {
+            state.copy_to_clipboard_button_label = DIFF_TO_CLIPBOARD_CLICKED.to_owned();
+
+            let mut clipboard = Clipboard::new().unwrap();
+            let unified_diff = format!("{}", state.unified_diff.clone().unwrap());
+            clipboard.set_text(unified_diff.as_str()).unwrap();
         }
     }
 }
