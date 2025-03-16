@@ -1,9 +1,9 @@
 # Quick Diff ME
 
 [![crates.io](https://img.shields.io/crates/v/quick-diff-me?label=latest)](https://crates.io/crates/quick-diff-me)
-[![Documentation](https://docs.rs/quick-diff-me/badge.svg?version=latest)](https://docs.rs/quick-diff-me/latest)
-[![Dependency Status](https://deps.rs/crate/quick-diff-me/latest/status.svg)](https://deps.rs/crate/quick-diff-me/latest)
-[![Releases Workflow](https://github.com/nabbisen/quick-diff-me/actions/workflows/release-executable.yaml/badge.svg)](https://github.com/nabbisen/quick-diff-me/actions/workflows/)
+[![Documentation](https://docs.rs/quick-diff-me/badge.svg?version=latest)](https://docs.rs/quick-diff-me)
+[![Dependency Status](https://deps.rs/crate/quick-diff-me/latest/status.svg)](https://deps.rs/crate/quick-diff-me)
+[![Releases Workflow](https://github.com/nabbisen/quick-diff-me/actions/workflows/release-executable.yaml/badge.svg)](https://github.com/nabbisen/quick-diff-me/actions/workflows/release-executable.yaml)
 [![License](https://img.shields.io/github/license/nabbisen/quick-diff-me)](https://github.com/nabbisen/quick-diff-me/blob/main/LICENSE)
 
 ## Summary
