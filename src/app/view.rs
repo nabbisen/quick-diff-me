@@ -1,7 +1,6 @@
 use iced::theme::palette::Extended;
 use iced::widget::{button, column, container, row, scrollable, text, Column, Container, Row};
 use iced::{Element, Fill, Font};
-use sheets_diff::core::diff::UnifiedDiffKind;
 
 use super::{message::Message, state::State};
 use crate::core::consts::{APP_THEME, BASE_SIZE, FOOTER_NOTE, GUIDANCE};
@@ -60,7 +59,7 @@ fn diff_viewer<'a>(
     palette: &'a Extended,
     diff_font: &Font,
 ) -> Container<'a, Message> {
-    if state.unified_diff.is_none() {
+    if state.formatted_unified_diff.is_none() {
         return Container::new("").height(Fill);
     }
 
@@ -73,7 +72,7 @@ fn diff_viewer<'a>(
 
 /// footer
 fn footer<'a>(state: &'a State, palette: &'a Extended) -> Container<'a, Message> {
-    if state.unified_diff.is_none() {
+    if state.formatted_unified_diff.is_none() {
         let footer_note = text(FOOTER_NOTE)
             .color(palette.secondary.weak.color)
             .size(BASE_SIZE * 0.75);
@@ -106,49 +105,72 @@ fn diff_rows<'a>(
     palette: &'a Extended,
     diff_font: &Font,
 ) -> Vec<Row<'a, Message>> {
-    let rows: Vec<Row<Message>> = if let Some(unified_diff) = &state.unified_diff {
-        unified_diff
-            .lines
-            .iter()
-            .map(|x| {
-                let old_str = match x.kind {
-                    UnifiedDiffKind::NewContent => "".to_owned(),
-                    _ => format!("{}", x),
-                };
-                let new_str = match x.kind {
-                    UnifiedDiffKind::OldContent => "".to_owned(),
-                    _ => format!("{}", x),
-                };
+    let rows: Vec<Row<Message>> =
+        if let Some(formatted_unified_diff) = &state.formatted_unified_diff {
+            formatted_unified_diff
+                .content
+                .iter()
+                .flat_map(|x| {
+                    let mut ret = vec![row![
+                        column!(container(
+                            text(&x.old_title)
+                                .color(palette.secondary.base.color)
+                                .font(diff_font.clone())
+                        )
+                        .width(Fill)),
+                        column!(container(
+                            text(&x.new_title)
+                                .color(palette.secondary.base.color)
+                                .font(diff_font.clone())
+                        )
+                        .width(Fill))
+                    ]];
 
-                let old_text = match x.kind {
-                    UnifiedDiffKind::OldTitle | UnifiedDiffKind::NewTitle => {
-                        text(old_str).color(palette.secondary.base.color)
-                    }
-                    UnifiedDiffKind::DiffPos => text(old_str).color(palette.secondary.strong.color),
-                    UnifiedDiffKind::OldContent => text(old_str).color(palette.danger.strong.color),
-                    _ => text(old_str),
-                }
-                .font(diff_font.clone());
-                let new_text = match x.kind {
-                    UnifiedDiffKind::OldTitle | UnifiedDiffKind::NewTitle => {
-                        text(new_str).color(palette.secondary.base.color)
-                    }
-                    UnifiedDiffKind::DiffPos => text(new_str).color(palette.secondary.strong.color),
-                    UnifiedDiffKind::NewContent => {
-                        text(new_str).color(palette.success.strong.color)
-                    }
-                    _ => text(new_str),
-                }
-                .font(diff_font.clone());
+                    let lines = x.lines.iter().flat_map(|x| {
+                        let mut ret = if let Some(pos) = &x.pos {
+                            let old_pos_text = text(pos.as_str())
+                                .color(palette.secondary.strong.color)
+                                .font(diff_font.clone());
+                            let new_pos_text = text(pos.as_str())
+                                .color(palette.secondary.strong.color)
+                                .font(diff_font.clone());
+                            vec![row![
+                                column!(container(old_pos_text).width(Fill)),
+                                column!(container(new_pos_text).width(Fill))
+                            ]]
+                        } else {
+                            vec![]
+                        };
 
-                row![
-                    column!(container(old_text).width(Fill)),
-                    column!(container(new_text).width(Fill))
-                ]
-            })
-            .collect()
-    } else {
-        vec![row![text(GUIDANCE)]]
-    };
+                        let old_str = &x.old;
+                        let new_str = &x.new;
+                        let old_text = if let Some(old_str) = old_str {
+                            text(old_str).color(palette.danger.strong.color)
+                        } else {
+                            text("")
+                        }
+                        .font(diff_font.clone());
+                        let new_text = if let Some(new_str) = new_str {
+                            text(new_str).color(palette.success.strong.color)
+                        } else {
+                            text("")
+                        }
+                        .font(diff_font.clone());
+
+                        ret.extend(vec![row![
+                            column!(container(old_text).width(Fill)),
+                            column!(container(new_text).width(Fill))
+                        ]]);
+
+                        ret
+                    });
+
+                    ret.extend(lines);
+                    ret
+                })
+                .collect()
+        } else {
+            vec![row![text(GUIDANCE)]]
+        };
     rows
 }

@@ -54,8 +54,9 @@ pub fn handle(state: &mut State, message: Message) {
             state.copy_to_clipboard_button_label = DIFF_TO_CLIPBOARD_CLICKED.to_owned();
 
             let mut clipboard = Clipboard::new().unwrap();
-            let unified_diff = format!("{}", state.unified_diff.clone().unwrap());
-            clipboard.set_text(unified_diff.as_str()).unwrap();
+            let formatted_unified_diff =
+                format!("{}", state.formatted_unified_diff.clone().unwrap());
+            clipboard.set_text(formatted_unified_diff.as_str()).unwrap();
         }
     }
 }
