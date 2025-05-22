@@ -1,6 +1,6 @@
 [package]
 name = "quick-diff-me"
-version = "1.2.1"
+version = "1.2.2"
 edition = "2021"
 
 description = "Quick Diff (unified diff) on Microsoft Excel viewer as Iced GUI app"
